@@ -55,7 +55,7 @@ mount /dev/sda3 /mnt/home
 
 echo '3.1 Поднимаем Россиюшку....'
 rm -rf /etc/pacman.d/mirrorlist
-wget https://git.io/mirrorlist
+wget https://raw.githubusercontent.com/simurgh314/arch-testing/master/mirrorlist
 mv -f ~/mirrorlist /etc/pacman.d/mirrorlist
 
 echo '3.2 СТАВИМ ПАКЕТЫ :)'
