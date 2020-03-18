@@ -1,6 +1,6 @@
 #2
 
-#!/bin/bash
+#!/bin/zsh
 read -p "Имя компьютера (planet_express) --> : " hostname
 read -p "Имя твое (homer) -->: " username
 
@@ -44,8 +44,6 @@ useradd -m -g users -G wheel,audio,lp,optical,power,scanner,storage,video -s /bi
 
 echo 'ВВЕДИ ПАРОЛЬ АДМИНА, бро'
 passwd
-
-
 
 
 
