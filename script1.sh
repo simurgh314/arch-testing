@@ -64,4 +64,4 @@ pacstrap /mnt linux-firmware base base-devel linux linux-headers nano dhcpcd dia
 echo '3.3 НАСТРОЙКА:'
 genfstab -pU /mnt >> /mnt/etc/fstab
 
-arch-chroot /mnt sh -c "$(curl -fsSL https://github.com/simurgh314/arch-testing.git/script2)"
+arch-chroot /mnt sh -c "$(curl -fsSL https://raw.githubusercontent.com/simurgh314/arch-testing/master/script2.sh)"
