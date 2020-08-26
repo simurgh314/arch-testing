@@ -2,9 +2,13 @@ loadkeys ru
 setfont cyr-sun16
 timedatectl set-ntp true
 
+echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen
+echo 'en_US ISO-8859-1' > /etc/locale.gen
+echo 'ru_RU.UTF-8 UTF-8' > /etc/locale.gen
+echo 'ru_RU ISO-8859-5' > /etc/locale.gen
 
-
-
+locale-gen
+export 'LANG=ru_RU.UTF-8'
 
 (
  echo g;
@@ -95,17 +99,25 @@ read -p "Имя твое (homer?) -->: " username
 echo $hostname > /etc/hostname
 
 
-echo 'GRUB_ENABLE_CRYPTODISK=y' >> /etc/default/grub
+#echo 'GRUB_ENABLE_CRYPTODISK=y' >> /etc/default/grub
+
+#blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")' 
+#CRYPTOID=$(blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")')
+
+
+#echo 'GRUB_CMDLINE_LINUX="cryptdevice=UUID=$CRYPTOID:cryptx"'
+
+
+#mkinitcpio -p linux
 
 
 
+#pacman -Syy
+#pacman -S grub efibootmgr --noconfirm 
+#grub-install /dev/sda
+#grub-mkconfig -o /boot/grub/grub.cfg
 
-
-
-mkinitcpio -p linux
-
-
-
+#pacman -S netctl dialog wpa_supplicant --noconfirm 
 
 
 
