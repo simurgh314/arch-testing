@@ -24,7 +24,51 @@
   
  echo w;
 ) | fdisk /dev/vda
+echo;
+echo;
+echo;
+
+
+
+echo '
+
+
+=================================================================
+
+
+	Vvedi   YES   i vvedi 2 raza parol ot diska...
+
+=================================================================
+
+';
 
 
 cryptsetup -yv luksFormat /dev/vda2
-echo YES;
+
+echo '
+
+    VVEDI TEPER ETOT PAROL chtobi otkrit container
+    ';
+
+cryptsetup open /dev/vda2 container
+
+
+lsblk
+
+
+mkfs.ext4 /dev/mapper/container
+echo y;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
