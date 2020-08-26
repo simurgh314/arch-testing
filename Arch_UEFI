@@ -8,7 +8,7 @@ echo 'ru_RU.UTF-8 UTF-8' > /etc/locale.gen
 echo 'ru_RU ISO-8859-5' > /etc/locale.gen
 
 locale-gen
-export 'LANG=ru_RU.UTF-8'
+export LANG=ru_RU.UTF-8
 
 (
  echo g;
@@ -44,7 +44,7 @@ echo;
 
 echo '
 =================================================================
-	Vvedi   YES   i vvedi 2 raza parol ot diska...
+	Введи YES
 =================================================================
 ';
 
@@ -79,27 +79,28 @@ lsblk
 
 
 
-pacstrap /mnt linux-firmware base base-devel linux linux-headers nano dhcpcd dialog wpa_supplicant zsh grub efibootmgr
+#pacstrap /mnt linux-firmware base base-devel linux linux-headers nano dhcpcd dialog wpa_supplicant zsh grub efibootmgr
+pacstrap /mnt  base linux nano dhcpcd grub efibootmgr
 genfstab -pU /mnt >> /mnt/etc/fstab
 
 
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen 
-echo 'KEYMAP=ru' >> /etc/vconsole.conf
-echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
-echo 'LANG="ru_RU.UTF-8"' > /etc/locale.conf
+echo "KEYMAP=ru" >> /etc/vconsole.conf
+echo "FONT=cyr-sun16" >> /etc/vconsole.conf
+echo "LANG='ru_RU.UTF-8'" > /etc/locale.conf
 locale-gen
 
 ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 
-read -p "Имя компьютера (прошлый раз planet_express) --> : " hostname
+read -p "Имя компьютера --> : " hostname
 
-read -p "Имя твое (homer?) -->: " username
+read -p "Имя твое -->: " username
 
 echo $hostname > /etc/hostname
 
 
-#echo 'GRUB_ENABLE_CRYPTODISK=y' >> /etc/default/grub
+echo 'GRUB_ENABLE_CRYPTODISK=y' >> /etc/default/grub
 
 #blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")' 
 #CRYPTOID=$(blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")')
@@ -108,14 +109,14 @@ echo $hostname > /etc/hostname
 #echo 'GRUB_CMDLINE_LINUX="cryptdevice=UUID=$CRYPTOID:cryptx"'
 
 
-#mkinitcpio -p linux
+mkinitcpio -p linux
 
 
 
-#pacman -Syy
-#pacman -S grub efibootmgr --noconfirm 
-#grub-install /dev/sda
-#grub-mkconfig -o /boot/grub/grub.cfg
+pacman -Syy
+pacman -S grub efibootmgr --noconfirm 
+grub-install /dev/vda
+grub-mkconfig -o /boot/grub/grub.cfg
 
 #pacman -S netctl dialog wpa_supplicant --noconfirm 
 
