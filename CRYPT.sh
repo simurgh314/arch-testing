@@ -21,7 +21,7 @@ timedatectl set-ntp true
  echo y;
   
  echo w;
-) | fdisk /dev/vda
+) | fdisk -t gpt /dev/vda
 
 
 mkfs.fat -F32 /dev/vda1
@@ -29,3 +29,4 @@ mkfs.ext4  /dev/vda2
 
 
 cryptsetup -yv luksFormat /dev/vda2
+cryptsetup open /dev/papper container
