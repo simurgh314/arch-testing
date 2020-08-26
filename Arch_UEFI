@@ -1,0 +1,40 @@
+#!/bin/bash
+
+timedatectl set-ntp true
+
+(
+ echo g;
+
+ echo n;
+ echo ;
+ echo;
+ echo +300M;
+ echo y;
+ echo t;
+ echo 1;
+
+  
+ echo n;
+ echo;
+ echo;
+ echo;
+ echo y;
+  
+ echo w;
+) | fdisk /dev/sda
+
+
+mkfs.fat -F32 /dev/sda1
+mkfs.ext4  /dev/sda2
+
+
+mount /dev/sda2 /mnt
+mkdir -p /mnt/boot/efi
+mount /dev/sda1 /mnt/boot/efi
+
+
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano dhcpcd netctl dialog  wpa_supplicant
+
+
+genfstab -pU /mnt >> /mnt/etc/fstab
+arch-chroot /mnt sh -c "$(curl -fsSL git.io/archuefi2.sh)"
