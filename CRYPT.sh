@@ -9,7 +9,7 @@ timedatectl set-ntp true
  echo ;
  echo;
  echo +300M;
- echo y;
+ echo Y;
  echo t;
  echo 1;
 
@@ -18,7 +18,7 @@ timedatectl set-ntp true
  echo;
  echo;
  echo;
- echo y;
+ echo Y;
   
  echo w;
 ) | fdisk -t gpt /dev/vda
