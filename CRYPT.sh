@@ -7,14 +7,14 @@ echo 'GRUB_ENABLE_CRYPTODISK=y' >> /etc/default/grub
 #echo 'GRUB_CMDLINE_LINUX="cryptdevice=UUID=$CRYPTOID:cryptx"'
 
 
-mkinitcpio -p linux
+#mkinitcpio -p linux
 
 
 
-pacman -Syy
-pacman -S grub efibootmgr --noconfirm 
-grub-install /dev/vda
-grub-mkconfig -o /boot/grub/grub.cfg
+#pacman -Syy
+#pacman -S grub efibootmgr --noconfirm 
+#grub-install /dev/vda
+#grub-mkconfig -o /boot/grub/grub.cfg
 
 #pacman -S netctl dialog wpa_supplicant --noconfirm 
 
