@@ -29,24 +29,23 @@ timedatectl set-ntp true
  #echo y;
   
  echo w;
-) | fdisk /dev/vda
+) | fdisk /dev/sda
 echo;
 
 
 echo '
-=================================================================
+===========================================
 	Введи YES
-=================================================================
-';
+===========================================
 
-cryptsetup -yv luksFormat /dev/vda2
+cryptsetup -yv luksFormat /dev/sda2
 
 echo '
 ================================
     Введи пароль от контейнера 
     ';
 
-cryptsetup open /dev/vda2 container
+cryptsetup open /dev/sda2 container
 
 
 lsblk
@@ -60,7 +59,7 @@ mkfs.fat -F32 /dev/sda1
 
 mount /dev/mapper/container /mnt
 mkdir -p /mnt/boot/efi
-mount /dev/vda1 /mnt/boot/efi
+mount /dev/sda1 /mnt/boot/efi
 
 echo '
 
@@ -89,9 +88,6 @@ echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen
 echo '
 
 
-Проникновенье наш по планете, особенно заметно в далеке: 
-в общественном парижском туалете- есть надписи на русском языке"
-	
 	'
 locale-gen
 echo 'LANG="ru_RU.UTF-8"' > /etc/locale.conf
@@ -107,7 +103,7 @@ mkinitcpio -p linux
 
 pacman -Syy
 pacman -S grub efibootmgr --noconfirm 
-grub-install /dev/vda
+grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 
 echo '
@@ -140,7 +136,7 @@ echo '
 	
 
 
-blkid -s UUID /dev/vda2 | grep -oP '(?<=UUID=").+?(?=")'
+blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")'
 #sed -i 's/GRUB_CMDLINE_LINUX=""'/GRUB_CMDLINE_LINUX="$CRYPTOID:container/g"  /etc/default/grub
 echo '
 
