@@ -42,7 +42,8 @@ echo '
 cryptsetup -yv luksFormat /dev/vda2
 
 echo '
-    Введи пароль от контейнера (3 раза)
+================================
+    Введи пароль от контейнера 
     ';
 
 cryptsetup open /dev/vda2 container
@@ -85,12 +86,20 @@ ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen 
 
-echo 'Обновим...'
+echo '
+
+
+Проникновенье наш по планете, особенно заметно в далеке: 
+в общественном парижском туалете- есть надписи на русском языке"
+	
+	'
 locale-gen
 echo 'LANG="ru_RU.UTF-8"' > /etc/locale.conf
 echo 'KEYMAP=ru' >> /etc/vconsole.conf
 echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
 
+
+echo '	Пристегни ремни, Элли...'
 
 
 mkinitcpio -p linux
@@ -116,15 +125,33 @@ echo 'GRUB_ENABLE_CRYPTODISK=y' >> /etc/default/grub
 
 
 
-CRYPTOID=$(blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")')
-sed -i 'sGRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cryptdevice=UUID=$CRYPTOID:cryptx"/g' /etc/default/grub
+#CRYPTOID=$(blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")')
+#sed -i 'sGRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cryptdevice=UUID=$CRYPTOID:cryptx"/g' /etc/default/grub
 
 
 
+#blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")' 
 
 
 
+echo '
+	ПЕРЕПИШИ  
+	'
+	
 
+
+blkid -s UUID /dev/vda2 | grep -oP '(?<=UUID=").+?(?=")'
+#sed -i 's/GRUB_CMDLINE_LINUX=""'/GRUB_CMDLINE_LINUX="$CRYPTOID:container/g"  /etc/default/grub
+echo '
+
+
+'
+echo 'теперь открывай  /etc/default/grub  и вставляй туда в таком формате
+
+GRUB_CMDLINE_LINUX="cryptdevice=UUID=xxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx:container"
+	
+	
+	'
 
 
 
