@@ -32,7 +32,7 @@ cryptsetup -yv luksFormat /dev/sda2
 
 
 
-mount /dev/sda2 /mnt
+mount /dev/mapper/container /mnt
 mkdir -p /mnt/boot/efi
 mount /dev/sda1 /mnt/boot/efi
 
