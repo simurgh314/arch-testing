@@ -9,11 +9,11 @@
  echo t;
  echo 1;
 
- echo n;
- echo;
- echo;
- echo +40G;
- #echo y;
+ #echo n;
+ #echo;
+ #echo;
+ #echo +40G;
+ ##echo y;
  
   
  echo n;
