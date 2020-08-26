@@ -7,7 +7,7 @@ timedatectl set-ntp true
 
  echo n;
  echo ;
- echo;
+ echo ;
  echo +300M;
  echo Y;
  echo t;
