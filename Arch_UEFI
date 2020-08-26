@@ -2,13 +2,7 @@ loadkeys ru
 setfont cyr-sun16
 timedatectl set-ntp true
 
-echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen
-echo 'en_US ISO-8859-1' > /etc/locale.gen
-echo 'ru_RU.UTF-8 UTF-8' > /etc/locale.gen
-echo 'ru_RU ISO-8859-5' > /etc/locale.gen
 
-locale-gen
-export LANG=ru_RU.UTF-8
 
 (
  echo g;
@@ -37,9 +31,6 @@ export LANG=ru_RU.UTF-8
  echo w;
 ) | fdisk /dev/vda
 echo;
-echo;
-echo;
-
 
 
 echo '
@@ -48,11 +39,10 @@ echo '
 =================================================================
 ';
 
-
 cryptsetup -yv luksFormat /dev/vda2
 
 echo '
-    VVEDI TEPER ETOT PAROL chtobi otkrit container
+    Введи пароль от контейнера (3 раза)
     ';
 
 cryptsetup open /dev/vda2 container
@@ -78,39 +68,32 @@ echo '
 lsblk
 
 
-
 #pacstrap /mnt linux-firmware base base-devel linux linux-headers nano dhcpcd dialog wpa_supplicant zsh grub efibootmgr
-pacstrap /mnt  base linux nano dhcpcd grub efibootmgr
+pacstrap /mnt  base base-devel linux linux-headers nano dhcpcd grub efibootmgr
 genfstab -pU /mnt >> /mnt/etc/fstab
+
+
+arch-chroot /mnt
+
+
+read -p "Имя компьютера --> : " hostname
+read -p "Имя твое -->: " username
+echo $hostname > /etc/hostname
+ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 
 
 echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
 echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen 
-echo "KEYMAP=ru" >> /etc/vconsole.conf
-echo "FONT=cyr-sun16" >> /etc/vconsole.conf
-echo "LANG='ru_RU.UTF-8'" > /etc/locale.conf
+
+echo 'Обновим...'
 locale-gen
+echo 'LANG="ru_RU.UTF-8"' > /etc/locale.conf
+echo 'KEYMAP=ru' >> /etc/vconsole.conf
+echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
 
-ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
-
-read -p "Имя компьютера --> : " hostname
-
-read -p "Имя твое -->: " username
-
-echo $hostname > /etc/hostname
-
-
-echo 'GRUB_ENABLE_CRYPTODISK=y' >> /etc/default/grub
-
-#blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")' 
-#CRYPTOID=$(blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")')
-
-
-#echo 'GRUB_CMDLINE_LINUX="cryptdevice=UUID=$CRYPTOID:cryptx"'
 
 
 mkinitcpio -p linux
-
 
 
 pacman -Syy
@@ -118,7 +101,24 @@ pacman -S grub efibootmgr --noconfirm
 grub-install /dev/vda
 grub-mkconfig -o /boot/grub/grub.cfg
 
-#pacman -S netctl dialog wpa_supplicant --noconfirm 
+echo '
+========================================
+		ВВЕДИ ПАРОЛЬ АДМИНА
+		
+		'
+passwd
+
+
+
+
+echo 'GRUB_ENABLE_CRYPTODISK=y' >> /etc/default/grub
+#blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")' 
+
+
+
+CRYPTOID=$(blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")')
+sed -i 'sGRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cryptdevice=UUID=$CRYPTOID:cryptx"/g' /etc/default/grub
+
 
 
 
