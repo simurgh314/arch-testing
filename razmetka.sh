@@ -23,4 +23,8 @@
  #echo y;
   
  echo w;
-) | fdisk /dev/sda
+) | fdisk /dev/vda
+
+
+cryptsetup -yv luksFormat /dev/vda2
+echo YES;
