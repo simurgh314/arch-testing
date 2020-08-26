@@ -38,6 +38,8 @@ echo '
 	Введи YES
 ===========================================
 
+'
+
 cryptsetup -yv luksFormat /dev/sda2
 
 echo '
