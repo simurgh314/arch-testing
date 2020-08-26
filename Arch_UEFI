@@ -28,13 +28,62 @@ mkfs.fat -F32 /dev/sda1
 mkfs.ext4  /dev/sda2
 
 
+cryptsetup -yv luksFormat /dev/sda2
+
+
+
 mount /dev/sda2 /mnt
 mkdir -p /mnt/boot/efi
 mount /dev/sda1 /mnt/boot/efi
 
 
-pacstrap /mnt base base-devel linux linux-firmware linux-headers nano dhcpcd netctl dialog  wpa_supplicant
+pacstrap /mnt base base-devel linux linux-firmware linux-headers nano dhcpcd netctl dialog wpa_supplicant
 
 
 genfstab -pU /mnt >> /mnt/etc/fstab
-arch-chroot /mnt sh -c "$(curl -fsSL git.io/archuefi2.sh)"
+
+
+#arch-chroot /mnt sh -c "$(curl -fsSL git.io/archuefi2.sh)"
+
+
+read -p "Введи имя компьютера: " hostname
+read -p "Введи имя пользователя: " username
+
+echo $hostname > /etc/hostname
+ln -sf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
+
+echo "en_US.UTF-8 UTF-8" > /etc/locale.gen
+echo "ru_RU.UTF-8 UTF-8" >> /etc/locale.gen 
+locale-gen
+echo 'LANG="ru_RU.UTF-8"' > /etc/locale.conf
+
+echo 'KEYMAP=ru' >> /etc/vconsole.conf
+echo 'FONT=cyr-sun16' >> /etc/vconsole.conf
+
+
+mkinitcpio -p linux
+
+pacman -Syy
+pacman -S grub efibootmgr --noconfirm 
+grub-install /dev/sda
+grub-mkconfig -o /boot/grub/grub.cfg
+
+useradd -m -g users -G wheel,lp,optical,power,scanner,storage,video -s /bin/bash $username
+
+
+echo 'ПАРОЛЬ РУТ'
+passwd
+
+echo 'ПОРОЛЬ ПОЛЬЗОВАТЕЛЯ'
+passwd $username
+echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
+
+echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
+
+echo '[multilib]' >> /etc/pacman.conf
+echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
+pacman -Syy
+
+
+exit
+
