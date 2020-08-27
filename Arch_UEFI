@@ -1,8 +1,8 @@
+
+#!/bin/zsh
 loadkeys ru
 setfont cyr-sun16
 timedatectl set-ntp true
-
-
 
 (
  echo g;
@@ -33,35 +33,20 @@ timedatectl set-ntp true
 echo;
 
 
-echo '
-===========================================
-	Введи YES
-===========================================
-
-'
-
-cryptsetup -yv luksFormat /dev/sda2
-
-echo '
-================================
-    Введи пароль от контейнера 
-    ';
-
-cryptsetup open /dev/sda2 container
-
 
 lsblk
 
 
-mkfs.ext4 /dev/mapper/container
-echo y;
-
 
 mkfs.fat -F32 /dev/sda1
+echo y;
+mkfs.ext4  /dev/sda2
+echo y;
 
-mount /dev/mapper/container /mnt
-mkdir -p /mnt/boot/efi
+mount /dev/sda2 /mnt
+mkdir -p /mnt/{home,boot/efi}
 mount /dev/sda1 /mnt/boot/efi
+
 
 echo '
 
@@ -70,8 +55,7 @@ echo '
 lsblk
 
 
-#pacstrap /mnt linux-firmware base base-devel linux linux-headers nano dhcpcd dialog wpa_supplicant zsh grub efibootmgr
-pacstrap /mnt  base base-devel linux linux-headers nano dhcpcd grub efibootmgr
+pacstrap /mnt linux-firmware base base-devel linux linux-headers nano dhcpcd dialog wpa_supplicant zsh grub efibootmgr
 genfstab -pU /mnt >> /mnt/etc/fstab
 
 
@@ -79,7 +63,7 @@ arch-chroot /mnt
 
 
 read -p "Имя компьютера --> : " hostname
-read -p "Имя твое -->: " username
+read -p "Имя пользователя -->: " username
 echo $hostname > /etc/hostname
 ln -svf /usr/share/zoneinfo/Europe/Moscow /etc/localtime
 
@@ -117,43 +101,39 @@ passwd
 
 
 
-
-echo 'GRUB_ENABLE_CRYPTODISK=y' >> /etc/default/grub
-#blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")' 
+useradd -m -g users -G wheel,audio,lp,optical,power,scanner,storage,video -s /bin/bash $username
 
 
+echo 'Теперь введи пароль пользователя
 
-#CRYPTOID=$(blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")')
-#sed -i 'sGRUB_CMDLINE_LINUX=""/GRUB_CMDLINE_LINUX="cryptdevice=UUID=$CRYPTOID:cryptx"/g' /etc/default/grub
+'
+passwd $username
+
+echo '%wheel ALL=(ALL) ALL' >> /etc/sudoers
+
+echo '[multilib]' >> /etc/pacman.conf
+echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
 
 
 
-#blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")' 
-
+pacman -Syy
+pacman -S xorg-server xorg-xinit xorg-apps mesa-libgl xterm
 
 
 echo '
-	ПЕРЕПИШИ  
-	'
-	
+=====================================================
+ВЫТАЩИ ФЛЕШКУ И ПРЕЗАГРУЗИ КОМП. ПЕРВАЯ ЧАСТЬ ГОТОВА)
 
 
-blkid -s UUID /dev/sda2 | grep -oP '(?<=UUID=").+?(?=")'
-#sed -i 's/GRUB_CMDLINE_LINUX=""'/GRUB_CMDLINE_LINUX="$CRYPTOID:container/g"  /etc/default/grub
-echo '
+
+
+
+
+
+
 
 
 '
-echo 'теперь открывай  /etc/default/grub  и вставляй туда в таком формате
-
-GRUB_CMDLINE_LINUX="cryptdevice=UUID=xxxxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxx:container"
-	
-	
-	'
-
-
-
-
 
 
 
