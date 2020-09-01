@@ -27,7 +27,7 @@ timedatectl set-ntp true
   #echo +2048M;
 
   echo n;
-  echo p;
+  echo;
   echo;
   echo;
   echo;
