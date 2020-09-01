@@ -20,11 +20,11 @@ timedatectl set-ntp true
   #echo;
   #echo +20G;
 
-  echo n;
-  echo;
-  echo;
-  echo;
-  echo +2048M;
+  #echo n;
+  #echo;
+  #echo;
+  #echo;
+  #echo +2048M;
 
   echo n;
   echo p;
@@ -58,7 +58,8 @@ swapon /dev/vda2
 
 echo "Server = http://mirror.yandex.ru/archlinux/\$repo/os/\$arch" > /etc/pacman.d/mirrorlist
 
-pacstrap /mnt base base-devel linux linux-headers linux-firmware nano dhcpcd netctl
+#linux-headers
+pacstrap /mnt base base-devel linux  linux-firmware nano dhcpcd netctl
 
 genfstab -pU /mnt >> /mnt/etc/fstab
 
@@ -113,7 +114,7 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 
 
-pacman -S dialog wpa_supplicant --noconfirm 
+#pacman -S dialog wpa_supplicant --noconfirm 
 useradd -m -g users -G wheel -s /bin/bash $username
 
 echo 'Создаем root пароль'
@@ -128,10 +129,10 @@ echo '[multilib]' >> /etc/pacman.conf
 echo 'Include = /etc/pacman.d/mirrorlist' >> /etc/pacman.conf
 pacman -Syy
 
-pacman -S xorg-server xorg-xinit xorg-apps mesa-libgl lib32-mesa-libgl xterm virtualbox-guest-utils xfce4 xfce4-goodies sddm sddm-kcm --noconfirm
-systemctl enable sddm
+#pacman -S xorg-server xorg-xinit xorg-apps mesa-libgl lib32-mesa-libgl xterm virtualbox-guest-utils xfce4 xfce4-goodies sddm sddm-kcm --noconfirm
+#systemctl enable sddm
 
-pacman -S ttf-liberation ttf-dejavu cantarell-fonts --noconfirm 
+#pacman -S ttf-liberation ttf-dejavu cantarell-fonts --noconfirm 
 
 exit
 
