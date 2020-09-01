@@ -30,6 +30,7 @@ timedatectl set-ntp true
   echo p;
   echo;
   echo;
+  echo;
   echo a;
   echo 1;
 
