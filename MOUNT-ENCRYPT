@@ -8,12 +8,17 @@ mkfs.ext4 /dev/vda2 -L crypt
 echo;
 
 
-echo 'Введи слово YES'
-cryptsetup -yv luksFormat /dev/vda
+echo '
 
-echo 'Введи 2 раза пароль от диска'
 
-cryptsetup open /dev/vda2 crypt
+ШИФРОВАНИЕ ДИСКА ++++++++++
+
+Введи слово YES
+
+
+'
+cryptsetup -yv luksFormat /dev/vda2
+cryptsetup luksOpen /dev/vda2 container
 
 
 #blkid -s UUID /dev/sdb3 | grep -oP '(?<=UUID=").+?(?=")'
