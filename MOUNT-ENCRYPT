@@ -2,10 +2,6 @@
 
 
 
-mkfs.ext2 /dev/vda1 -L boot
-echo;
-mkfs.ext4 /dev/vda2 -L crypt
-echo;
 
 
 echo '
