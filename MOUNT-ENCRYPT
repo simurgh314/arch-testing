@@ -13,10 +13,10 @@ cryptsetup -yv luksFormat /dev/vda
 
 echo 'Введи 2 раза пароль от диска'
 
-
+cryptsetup open /dev/vda2 crypt
 
 
 #blkid -s UUID /dev/sdb3 | grep -oP '(?<=UUID=").+?(?=")'
 
-lsblk -no UUID /dev/vda2 > disk
+#lsblk -no UUID /dev/vda2 > disk
 #echo GRUB_CMDLINE_LINUX="cryptdevice=UUID=$disk:cryptx" >> /boot/grub/…'
