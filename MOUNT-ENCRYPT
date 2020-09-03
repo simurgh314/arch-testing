@@ -1,0 +1,22 @@
+#!/bin/bash
+
+
+
+mkfs.ext2 /dev/vda1 -L boot
+echo;
+mkfs.ext4 /dev/vda2 -L crypt
+echo;
+
+
+echo 'Введи слово YES'
+cryptsetup -yv luksFormat /dev/vda
+
+echo 'Введи 2 раза пароль от диска'
+
+
+
+
+#blkid -s UUID /dev/sdb3 | grep -oP '(?<=UUID=").+?(?=")'
+
+lsblk -no UUID /dev/vda2 > disk
+#echo GRUB_CMDLINE_LINUX="cryptdevice=UUID=$disk:cryptx" >> /boot/grub/…'
