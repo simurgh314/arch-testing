@@ -38,3 +38,16 @@ timedatectl set-ntp true
 ) | fdisk /dev/vda
 
 lsblk
+
+
+mkfs.ext2 /dev/vda1
+echo;
+mkfs.ext4 /dev/vda2 
+echo;
+
+
+
+
+
+
+
