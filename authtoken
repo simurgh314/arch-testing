@@ -1,2 +1,2 @@
-#!/
+#!/bin/bash
 ./ngrok authtoken 1hPAZDGRhmIyNz9a0kzXluUn8sV_28n7SdF61oiAGrkFNUmkD
